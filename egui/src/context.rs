@@ -291,6 +291,16 @@ impl CtxRef {
         response
     }
 
+    /// For painting things on top of windows and panels (e.g. for tooltips)
+    pub fn foreground_painter(&self) -> Painter {
+        Painter::new(
+            self.clone(),
+            LayerId::foreground(),
+            self.input.screen_rect(),
+        )
+    }
+
+    /// Paint on top of everything else
     pub fn debug_painter(&self) -> Painter {
         Painter::new(self.clone(), LayerId::debug(), self.input.screen_rect())
     }

@@ -57,6 +57,13 @@ impl LayerId {
         Self { order, id }
     }
 
+    pub fn foreground() -> Self {
+        Self {
+            order: Order::Foreground,
+            id: Id::new("foreground"),
+        }
+    }
+
     pub fn debug() -> Self {
         Self {
             order: Order::Debug,
