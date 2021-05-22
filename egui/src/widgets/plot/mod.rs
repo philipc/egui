@@ -608,6 +608,7 @@ impl Prepared {
                     galley,
                     color,
                     fake_italics: false,
+                    rot: None,
                 });
             }
         }

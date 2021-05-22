@@ -48,6 +48,7 @@ pub enum Shape {
         color: Color32,
         /// If true, tilt the letters for a hacky italics effect.
         fake_italics: bool,
+        rot: Option<(Pos2, Rot2)>,
     },
     Mesh(Mesh),
 }
@@ -140,6 +141,7 @@ impl Shape {
             galley,
             color,
             fake_italics: false,
+            rot: None,
         }
     }
 }

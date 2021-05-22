@@ -582,6 +582,7 @@ impl Tessellator {
                 galley,
                 color,
                 fake_italics,
+                rot,
             } => {
                 if options.debug_paint_text_rects {
                     self.tessellate_rect(
@@ -594,7 +595,7 @@ impl Tessellator {
                         out,
                     );
                 }
-                self.tessellate_text(tex_size, pos, &galley, color, fake_italics, out);
+                self.tessellate_text(tex_size, pos, &galley, color, fake_italics, rot, out);
             }
         }
     }
@@ -636,6 +637,7 @@ impl Tessellator {
         galley: &super::Galley,
         color: Color32,
         fake_italics: bool,
+        rot: Option<(Pos2, Rot2)>,
         out: &mut Mesh,
     ) {
         if color == Color32::TRANSPARENT || galley.is_empty() {
@@ -719,6 +721,31 @@ impl Tessellator {
                         });
                         out.vertices.push(Vertex {
                             pos: rect.right_bottom(),
+                            uv: uv.right_bottom(),
+                            color,
+                        });
+                    } else if let Some((pos, rot)) = rot {
+                        let idx = out.vertices.len() as u32;
+                        out.add_triangle(idx, idx + 1, idx + 2);
+                        out.add_triangle(idx + 2, idx + 1, idx + 3);
+
+                        out.vertices.push(Vertex {
+                            pos: pos + rot * (rect.left_top() - pos),
+                            uv: uv.left_top(),
+                            color,
+                        });
+                        out.vertices.push(Vertex {
+                            pos: pos + rot * (rect.right_top() - pos),
+                            uv: uv.right_top(),
+                            color,
+                        });
+                        out.vertices.push(Vertex {
+                            pos: pos + rot * (rect.left_bottom() - pos),
+                            uv: uv.left_bottom(),
+                            color,
+                        });
+                        out.vertices.push(Vertex {
+                            pos: pos + rot * (rect.right_bottom() - pos),
                             uv: uv.right_bottom(),
                             color,
                         });

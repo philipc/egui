@@ -335,6 +335,7 @@ impl Painter {
                 galley,
                 color,
                 fake_italics,
+                rot: None,
             });
         }
     }
